@@ -1,0 +1,3 @@
+﻿<Project>
+  <Import Project="..\build\SocialApi-NET7.props" />
+</Project>
