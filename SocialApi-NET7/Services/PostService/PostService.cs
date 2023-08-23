@@ -41,10 +41,10 @@ namespace SocialAPI.Services.PostService
             serviceResponse.StatusCode = HttpStatusCode.OK;
             return serviceResponse;
         }
-        public async Task<ServiceResponse<GetPostDTO>> GetPostById(int id)
+        public async Task<ServiceResponse<GetPostDTO>> GetPostById(Guid id)
         {
             var serviceResponse = new ServiceResponse<GetPostDTO>();
-            var dbPost = await _context.Posts.FirstOrDefaultAsync(user => user.Id == id);
+            var dbPost = await _context.Posts.FirstOrDefaultAsync(user => user.UUID == id);
             if(dbPost == null)
             {
                 serviceResponse.StatusCode = HttpStatusCode.NotFound;
@@ -86,7 +86,7 @@ namespace SocialAPI.Services.PostService
             var newPost = new Post
             {
                 Body = createPostDTO.Body,
-                AuthorId = currentUser.Id,
+                AuthorUUID = currentUser.UUID,
                 Author = currentUser
             };
 

@@ -13,10 +13,18 @@ namespace SocialAPI.Data
 		public DbSet<User> Followers { get; set; }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-			modelBuilder.Entity<Post>()
+            modelBuilder.Entity<User>()
+				.Property(x => x.UUID)
+				.HasColumnType("uuid")
+				.HasDefaultValueSql("gen_random_uuid()");
+            modelBuilder.Entity<Post>()
+                .Property(x => x.UUID)
+                .HasColumnType("uuid")
+                .HasDefaultValueSql("gen_random_uuid()");
+            modelBuilder.Entity<Post>()
 				.HasOne(u => u.Author)
 				.WithMany(u => u.Posts)
-				.HasForeignKey(u => u.AuthorId);
+				.HasForeignKey(u => u.Id);
 			modelBuilder.Entity<Followers>()
 				.HasKey(f => new { f.FollowerID, f.FollowingID });
 			modelBuilder.Entity<Followers>()

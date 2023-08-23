@@ -7,10 +7,10 @@ namespace SocialAPI.Services.UserService
 	{
 		Task<ServiceResponse<List<User>>> GetUsers();
 		Task<ServiceResponse<GetUserDTO>> GetCurrentUser();
-		Task<ServiceResponse<GetUserDTO>> GetUserById(int id);
+		Task<ServiceResponse<GetUserDTO>> GetUserById(Guid id);
 		Task<ServiceResponse<GetUserDTO>> GetUserByUsername(string username);
-		Task<ServiceResponse<GetUserDTO>> DeleteUser(int id);
+		Task<ServiceResponse<GetUserDTO>> DeleteUser(Guid id);
 		Task<ServiceResponse<GetUserDTO>> UpdateUser(UpdateUserDTO user);
-		Task<ServiceResponse<string>> FollowUser(int id);
+		Task<ServiceResponse<string>> FollowUser(Guid id);
 	}
 }
