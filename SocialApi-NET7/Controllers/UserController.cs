@@ -32,7 +32,7 @@ namespace SocialAPI.Controllers
 		}
 
 		[HttpGet("id/{id}")]
-		public async Task<ActionResult<ServiceResponse<GetUserDTO>>> GetUserById(Guid id)
+		public async Task<ActionResult<ServiceResponse<GetUserDTO>>> GetUserById(int id)
 		{
 			return Ok(await _userService.GetUserById(id));
 		}
@@ -50,13 +50,13 @@ namespace SocialAPI.Controllers
 		}
 
 		[HttpDelete("delete")]
-		public async Task<ActionResult<ServiceResponse<GetUserDTO>>> DeleteUser(Guid id)
+		public async Task<ActionResult<ServiceResponse<GetUserDTO>>> DeleteUser(int id)
 		{
 			return Ok(await _userService.DeleteUser(id));
 		}
 
 		[HttpPost("follow/{id}")]
-		public async Task<ActionResult<ServiceResponse<string>>> FollowUser(Guid id)
+		public async Task<ActionResult<ServiceResponse<string>>> FollowUser(int id)
 		{
 			return Ok(await _userService.FollowUser(id));
 		}

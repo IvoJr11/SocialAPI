@@ -13,7 +13,6 @@ namespace SocialAPI.Models
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int Id { get; set; }
-        public Guid UUID { get; set; }
 
         [Required]
         public string Body { get; set; }
@@ -24,7 +23,7 @@ namespace SocialAPI.Models
 
         public int Likes { get; set; } = 0;
 
-        public Guid AuthorUUID { get; set; }
+        public int AuthorId { get; set; }
         
         [Required]
 		[JsonIgnore]

@@ -45,10 +45,10 @@ namespace SocialAPI.Services.UserService
 			return serviceResponse;
 		}
 
-		public async Task<ServiceResponse<GetUserDTO>> GetUserById(Guid id)
+		public async Task<ServiceResponse<GetUserDTO>> GetUserById(int id)
 		{
 			var serviceResponse = new ServiceResponse<GetUserDTO>();
-			var dbUser = await _context.Users.FirstOrDefaultAsync(user => user.UUID == id);
+			var dbUser = await _context.Users.FirstOrDefaultAsync(user => user.Id == id);
 			
 			if (dbUser == null)
 			{
@@ -79,10 +79,10 @@ namespace SocialAPI.Services.UserService
 			return serviceResponse;
 		}
 
-		public async Task<ServiceResponse<GetUserDTO>> DeleteUser(Guid id)
+		public async Task<ServiceResponse<GetUserDTO>> DeleteUser(int id)
 		{
 			var serviceResponse = new ServiceResponse<GetUserDTO>();
-			var dbUser = await _context.Users.FirstOrDefaultAsync(user => user.UUID == id);
+			var dbUser = await _context.Users.FirstOrDefaultAsync(user => user.Id == id);
 
 			if (dbUser == null)
 			{
@@ -125,7 +125,7 @@ namespace SocialAPI.Services.UserService
 			return serviceResponse;
 		}
 
-        public async Task<ServiceResponse<string>> FollowUser(Guid id)
+        public async Task<ServiceResponse<string>> FollowUser(int id)
         {
 			var serviceResponse = new ServiceResponse<string>();
 			var currentUser = await Utils.Utils.GetCurrentUser(_httpContext, _context, false);
@@ -134,8 +134,8 @@ namespace SocialAPI.Services.UserService
 				serviceResponse.StatusCode = HttpStatusCode.NotFound;
 				return serviceResponse;
 			}
-			var follower = await _context.Users.FirstOrDefaultAsync(u => u.UUID == currentUser.UUID);
-            var following = await _context.Users.FirstOrDefaultAsync(u => u.UUID == id);
+			var follower = await _context.Users.FirstOrDefaultAsync(u => u.Id == currentUser.Id);
+            var following = await _context.Users.FirstOrDefaultAsync(u => u.Id == id);
 			if (follower is null || following is null)
 			{
 				serviceResponse.Message = "User not found";

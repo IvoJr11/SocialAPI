@@ -30,7 +30,7 @@ namespace SocialAPI.Controllers
         }
 
         [HttpGet("id/{id}")]
-        public async Task<ActionResult<ServiceResponse<GetPostDTO>>> GetPostById(Guid id)
+        public async Task<ActionResult<ServiceResponse<GetPostDTO>>> GetPostById(int id)
         {
             return Ok(await _postService.GetPostById(id));
         }

@@ -10,7 +10,7 @@ namespace SocialAPI.Services.PostService
     public interface IPostService
     {
         Task<ServiceResponse<List<GetPostDTO>>> GetPosts();
-        Task<ServiceResponse<GetPostDTO>> GetPostById(Guid id);
+        Task<ServiceResponse<GetPostDTO>> GetPostById(int id);
         Task<ServiceResponse<GetPostDTO>> CreatePost(CreatePostDTO createPostDTO);
     }
 }
