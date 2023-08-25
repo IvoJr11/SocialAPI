@@ -12,5 +12,6 @@ namespace SocialAPI.Services.PostService
         Task<ServiceResponse<List<GetPostDTO>>> GetPosts();
         Task<ServiceResponse<GetPostDTO>> GetPostById(int id);
         Task<ServiceResponse<GetPostDTO>> CreatePost(CreatePostDTO createPostDTO);
+        Task<ServiceResponse<bool>> LikePost(int post_id);
     }
 }

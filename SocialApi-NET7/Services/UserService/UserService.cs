@@ -21,14 +21,14 @@ namespace SocialAPI.Services.UserService
 			_httpContext = httpContextAccessor;
 		}
 
-		public async Task<ServiceResponse<List<User>>> GetUsers()
+		public async Task<ServiceResponse<List<GetUserDTO>>> GetUsers()
 		{
-			var serviceResponse = new ServiceResponse<List<User>>();
+			var serviceResponse = new ServiceResponse<List<GetUserDTO>>();
 			var dbUsers = await _context.Users
 				.Include(u=> u.FollowersList)
 				.Include(u => u.Posts)
 				.ToListAsync();
-			serviceResponse.Data = dbUsers;
+			serviceResponse.Data = _mapper.Map<List<GetUserDTO>>(dbUsers);
 			serviceResponse.StatusCode = HttpStatusCode.OK;
 			return serviceResponse;
 		}
@@ -131,20 +131,20 @@ namespace SocialAPI.Services.UserService
 			var currentUser = await Utils.Utils.GetCurrentUser(_httpContext, _context, false);
 			if(currentUser == null)
 			{
+				serviceResponse.Message = "User not found";
 				serviceResponse.StatusCode = HttpStatusCode.NotFound;
 				return serviceResponse;
 			}
-			var follower = await _context.Users.FirstOrDefaultAsync(u => u.Id == currentUser.Id);
             var following = await _context.Users.FirstOrDefaultAsync(u => u.Id == id);
-			if (follower is null || following is null)
+			if (following is null)
 			{
-				serviceResponse.Message = "User not found";
+				serviceResponse.Message = "User you trying to follow has not found";
 				serviceResponse.StatusCode = HttpStatusCode.NotFound;
 				return serviceResponse;
 			}
 			var newFollow = new Followers
 			{
-				Follower = follower,
+				Follower = currentUser,
 				Following = following
 			};
 			_context.Add(newFollow);

@@ -31,31 +31,36 @@ namespace SocialAPI.Controllers
 			return Ok(await _userService.GetCurrentUser());
 		}
 
-		[HttpGet("id/{id}")]
+        [Authorize]
+        [HttpGet("id/{id}")]
 		public async Task<ActionResult<ServiceResponse<GetUserDTO>>> GetUserById(int id)
 		{
 			return Ok(await _userService.GetUserById(id));
 		}
 
-		[HttpGet("username/{username}")]
+        [Authorize]
+        [HttpGet("username/{username}")]
 		public async Task<ActionResult<ServiceResponse<GetUserDTO>>> GetUserByUsername(string username)
 		{
 			return Ok(await _userService.GetUserByUsername(username));
 		}
-		
-		[HttpPatch("update")]
+
+        [Authorize]
+        [HttpPatch("update")]
 		public async Task<ActionResult<ServiceResponse<GetUserDTO>>> UpdateUser(UpdateUserDTO updateUserDTO)
 		{
 			return Ok(await _userService.UpdateUser(updateUserDTO));
 		}
 
-		[HttpDelete("delete")]
+        [Authorize]
+        [HttpDelete("delete")]
 		public async Task<ActionResult<ServiceResponse<GetUserDTO>>> DeleteUser(int id)
 		{
 			return Ok(await _userService.DeleteUser(id));
 		}
 
-		[HttpPost("follow/{id}")]
+        [Authorize]
+        [HttpPost("follow/{id}")]
 		public async Task<ActionResult<ServiceResponse<string>>> FollowUser(int id)
 		{
 			return Ok(await _userService.FollowUser(id));

@@ -8,7 +8,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace SocialApi_NET7.Migrations
 {
     /// <inheritdoc />
-    public partial class InitialData : Migration
+    public partial class InitialDataWithLikeTable : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -76,10 +76,39 @@ namespace SocialApi_NET7.Migrations
                         onDelete: ReferentialAction.Cascade);
                 });
 
+            migrationBuilder.CreateTable(
+                name: "Like",
+                columns: table => new
+                {
+                    UserID = table.Column<int>(type: "integer", nullable: false),
+                    PostID = table.Column<int>(type: "integer", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Like", x => new { x.UserID, x.PostID });
+                    table.ForeignKey(
+                        name: "FK_Like_Posts_PostID",
+                        column: x => x.PostID,
+                        principalTable: "Posts",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_Like_User_UserID",
+                        column: x => x.UserID,
+                        principalTable: "User",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
             migrationBuilder.CreateIndex(
                 name: "IX_Followers_FollowingID",
                 table: "Followers",
                 column: "FollowingID");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Like_PostID",
+                table: "Like",
+                column: "PostID");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Posts_AuthorId",
@@ -92,6 +121,9 @@ namespace SocialApi_NET7.Migrations
         {
             migrationBuilder.DropTable(
                 name: "Followers");
+
+            migrationBuilder.DropTable(
+                name: "Like");
 
             migrationBuilder.DropTable(
                 name: "Posts");

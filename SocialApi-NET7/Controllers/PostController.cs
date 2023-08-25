@@ -22,24 +22,32 @@ namespace SocialAPI.Controllers
             _postService = postService;
         }
 
-        [HttpGet("getAll")]
         [Authorize]
+        [HttpGet("getAll")]
         public async Task<ActionResult<ServiceResponse<List<GetPostDTO>>>> GetPosts()
         {
             return Ok(await _postService.GetPosts());
         }
 
+        [Authorize]
         [HttpGet("id/{id}")]
         public async Task<ActionResult<ServiceResponse<GetPostDTO>>> GetPostById(int id)
         {
             return Ok(await _postService.GetPostById(id));
         }
 
-        [HttpPost("create")]
         [Authorize]
+        [HttpPost("create")]
         public async Task<ActionResult<ServiceResponse<GetPostDTO>>> CreatePost(CreatePostDTO newPost)
         {
             return Ok(await _postService.CreatePost(newPost));
+        }
+
+        [Authorize]
+        [HttpPost("like/{id}")]
+        public async Task<ActionResult<ServiceResponse<bool>>> LikePost(int id)
+        {
+            return Ok(await _postService.LikePost(id));
         }
     }
 }

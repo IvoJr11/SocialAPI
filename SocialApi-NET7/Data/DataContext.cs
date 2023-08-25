@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using SocialAPI.Models;
+using SocialApi_NET7.Models;
 
 namespace SocialAPI.Data
 {
@@ -13,10 +14,10 @@ namespace SocialAPI.Data
 		public DbSet<User> Followers { get; set; }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<Post>()
+			modelBuilder.Entity<Post>()
 				.HasOne(u => u.Author)
 				.WithMany(u => u.Posts)
-				.HasForeignKey(u => u.Id);
+				.HasForeignKey(u => u.AuthorId);
 			modelBuilder.Entity<Followers>()
 				.HasKey(f => new { f.FollowerID, f.FollowingID });
 			modelBuilder.Entity<Followers>()
@@ -27,6 +28,8 @@ namespace SocialAPI.Data
 				.HasOne(f => f.Following)
 				.WithMany(u => u.FollowersList)
 				.HasForeignKey(f => f.FollowingID);
-		}
+            modelBuilder.Entity<Like>()
+                .HasKey(l => new { l.UserID, l.PostID });
+        }
     }
 }

@@ -15,7 +15,7 @@ namespace SocialAPI.Models
         public int Id { get; set; }
 
         [Required]
-        public string Body { get; set; }
+        public string Body { get; set; } = string.Empty;
 
         public List<string> ImageUrls { get; set; } = new List<string>();
 
@@ -26,14 +26,7 @@ namespace SocialAPI.Models
         public int AuthorId { get; set; }
         
         [Required]
-		[JsonIgnore]
         public User? Author { get; set; }
-        public string AuthorName => Author?.Username ?? "unknown";
-        // public string AuthorName {
-        //     get {
-        //         return Author?.Username ?? "unknown";
-        //     }
-        //     set {}
-        // } 
+
     }
 }

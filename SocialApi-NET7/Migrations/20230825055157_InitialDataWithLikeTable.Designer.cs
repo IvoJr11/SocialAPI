@@ -13,8 +13,8 @@ using SocialAPI.Data;
 namespace SocialApi_NET7.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20230822062136_InitialData")]
-    partial class InitialData
+    [Migration("20230825055157_InitialDataWithLikeTable")]
+    partial class InitialDataWithLikeTable
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -101,6 +101,21 @@ namespace SocialApi_NET7.Migrations
                     b.ToTable("User");
                 });
 
+            modelBuilder.Entity("SocialApi_NET7.Models.Like", b =>
+                {
+                    b.Property<int>("UserID")
+                        .HasColumnType("integer");
+
+                    b.Property<int>("PostID")
+                        .HasColumnType("integer");
+
+                    b.HasKey("UserID", "PostID");
+
+                    b.HasIndex("PostID");
+
+                    b.ToTable("Like");
+                });
+
             modelBuilder.Entity("SocialAPI.Models.Followers", b =>
                 {
                     b.HasOne("SocialAPI.Models.User", "Follower")
@@ -129,6 +144,25 @@ namespace SocialApi_NET7.Migrations
                         .IsRequired();
 
                     b.Navigation("Author");
+                });
+
+            modelBuilder.Entity("SocialApi_NET7.Models.Like", b =>
+                {
+                    b.HasOne("SocialAPI.Models.Post", "Post")
+                        .WithMany()
+                        .HasForeignKey("PostID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("SocialAPI.Models.User", "User")
+                        .WithMany()
+                        .HasForeignKey("UserID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Post");
+
+                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("SocialAPI.Models.User", b =>

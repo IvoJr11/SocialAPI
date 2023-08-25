@@ -10,6 +10,7 @@ using SocialAPI.Models;
 using System.Security.Claims;
 using System.IdentityModel.Tokens.Jwt;
 using SocialAPI.Dtos;
+using SocialApi_NET7.Models;
 
 namespace SocialAPI.Services.PostService
 {
@@ -60,26 +61,11 @@ namespace SocialAPI.Services.PostService
         {
             var serviceResponse = new ServiceResponse<GetPostDTO>();
 
-            if(_httpContext?.HttpContext is null)
+            var currentUser = await Utils.Utils.GetCurrentUser(_httpContext, _context, true);
+            if(currentUser == null)
             {
-                serviceResponse.StatusCode = HttpStatusCode.BadRequest;
-                serviceResponse.Message = "Has been an error, try again";
-                return serviceResponse;
-            }
-
-            var nameToToken = _httpContext.HttpContext.User.FindFirstValue(JwtRegisteredClaimNames.Name);
-            if(nameToToken == null)
-            {
+                serviceResponse.Message = "User not found";
                 serviceResponse.StatusCode = HttpStatusCode.NotFound;
-                serviceResponse.Message = "The user is not authenticated";
-                return serviceResponse;
-            }
-            
-            var currentUser = await _context.Users.Include(u => u.Posts).FirstOrDefaultAsync(user => user.Username == nameToToken); 
-            if(currentUser is null)
-            {
-                serviceResponse.StatusCode = HttpStatusCode.NotFound;
-                serviceResponse.Message = "The user who is trying make a post was not found";
                 return serviceResponse;
             }
 
@@ -90,18 +76,47 @@ namespace SocialAPI.Services.PostService
                 Author = currentUser
             };
 
-            if(_context.Posts is null)
-            {
-                serviceResponse.Message = "No hay posts xd";
-                return serviceResponse;
-            }
-
             currentUser.Posts.Add(newPost);
             await _context.SaveChangesAsync();
             serviceResponse.Data = _mapper.Map<GetPostDTO>(newPost);
             serviceResponse.Message = "created successfully";
             serviceResponse.StatusCode = HttpStatusCode.Created;
 
+            return serviceResponse;
+        }
+
+        public async Task<ServiceResponse<bool>> LikePost(int post_id)
+        {
+            var serviceResponse = new ServiceResponse<bool>();
+            var currentUser = await Utils.Utils.GetCurrentUser(_httpContext, _context, false);
+            var currentPost = await _context.Posts.FirstOrDefaultAsync(p => p.Id == post_id);
+            
+            if(currentUser is null)
+            { 
+                serviceResponse.Message = "User not found";
+                serviceResponse.StatusCode= HttpStatusCode.NotFound;
+                return serviceResponse;
+            }
+
+            if(currentPost is null)
+            {
+                serviceResponse.Message = "The post that you're trying to like was not found";
+                serviceResponse.StatusCode= HttpStatusCode.NotFound;
+                return serviceResponse;
+            }
+            
+            var like = new Like
+            {
+                Post = currentPost,
+                User = currentUser
+            };
+
+            currentPost.Likes += 1;
+            _context.Add(like);
+            await _context.SaveChangesAsync();
+            
+            serviceResponse.Data = true;
+            serviceResponse.StatusCode = HttpStatusCode.OK;
             return serviceResponse;
         }
     }

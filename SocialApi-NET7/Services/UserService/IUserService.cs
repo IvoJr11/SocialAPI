@@ -5,7 +5,7 @@ namespace SocialAPI.Services.UserService
 {
 	public interface IUserService
 	{
-		Task<ServiceResponse<List<User>>> GetUsers();
+		Task<ServiceResponse<List<GetUserDTO>>> GetUsers();
 		Task<ServiceResponse<GetUserDTO>> GetCurrentUser();
 		Task<ServiceResponse<GetUserDTO>> GetUserById(int id);
 		Task<ServiceResponse<GetUserDTO>> GetUserByUsername(string username);

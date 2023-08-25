@@ -10,6 +10,7 @@ namespace SocialAPI.Dtos.PostDTO
 {
     public class GetPostDTO
     {
+        public int Id { get; set; }
         [Required]
         public string Body { get; set; }
 
@@ -23,6 +24,6 @@ namespace SocialAPI.Dtos.PostDTO
         [Required]
 		[JsonIgnore]
         public GetUserDTO Author { get; set; }
-        public string AuthorName { get; set; }
+        public int AuthorId { get; set; }
     }
 }
