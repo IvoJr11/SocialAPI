@@ -1,3 +1,4 @@
+using SocialApi_NET7.Models;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -8,25 +9,11 @@ using System.Threading.Tasks;
 
 namespace SocialAPI.Models
 {
-    public class Post
+    public class Post : BaseEntity
     {
-        [Key]
-        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        public int Id { get; set; }
-
-        [Required]
-        public string Body { get; set; } = string.Empty;
-
-        public List<string> ImageUrls { get; set; } = new List<string>();
-
-        public DateTimeOffset CreationDate { get; set; } = DateTimeOffset.UtcNow;
-
-        public int Likes { get; set; } = 0;
-
         public int AuthorId { get; set; }
         
         [Required]
         public User? Author { get; set; }
-
     }
 }

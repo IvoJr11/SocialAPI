@@ -12,6 +12,8 @@ namespace SocialAPI.Data
 		public DbSet<User> Users { get; set; }
 		public DbSet<Post> Posts { get; set; }
 		public DbSet<User> Followers { get; set; }
+		public DbSet<Like> Likes { get; set; }
+		public DbSet<Comment> Comments { get; set; }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
 			modelBuilder.Entity<Post>()
@@ -29,7 +31,16 @@ namespace SocialAPI.Data
 				.WithMany(u => u.FollowersList)
 				.HasForeignKey(f => f.FollowingID);
             modelBuilder.Entity<Like>()
-                .HasKey(l => new { l.UserID, l.PostID });
+                .HasKey(l => new { l.UserID, l.PostID, l.CommentID });
+			modelBuilder.Entity<Comment>()
+				.HasOne(c => c.Post)
+				.WithMany()
+				.HasForeignKey(c => c.PostId);
+            modelBuilder.Entity<Comment>()
+                .HasOne(c => c.Author)
+                .WithMany()
+                .HasForeignKey(c => c.AuthorId);
+
         }
     }
 }

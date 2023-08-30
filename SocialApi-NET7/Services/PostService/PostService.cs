@@ -111,7 +111,7 @@ namespace SocialAPI.Services.PostService
                 User = currentUser
             };
 
-            currentPost.Likes += 1;
+            currentPost.LikesCount += 1;
             _context.Add(like);
             await _context.SaveChangesAsync();
             
